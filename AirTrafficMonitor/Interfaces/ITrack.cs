@@ -16,6 +16,7 @@ namespace AirTrafficMonitor.Interfaces
         int Altitude { get; set; }
         DateTime TimeStamp { get; set; }
 
-        int CalculateCourse();
+        void CalculateCourse(ITrack oldTrack, ITrack newTrack);
+        void CalculateVelocity(ITrack oldTrack, ITrack newTrack);
     }
 }

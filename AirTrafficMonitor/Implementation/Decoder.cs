@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using AirTrafficMonitor.Dto;
@@ -16,6 +17,8 @@ namespace AirTrafficMonitor.Implementation
         public IWriter Writer { get; set; }
         public ICollisionDetector CollisionDetector { get; set; }
         public List<ITrack> Tracks { get; set; }
+        public List<ITrack> OldTracks { get; set; }
+        public ITrack Track { get; set; }
 
         public Decoder()
         {
@@ -23,6 +26,7 @@ namespace AirTrafficMonitor.Implementation
             Writer = new ConsoleWriter();
             CollisionDetector = new CollisionDetector();
             Tracks = new List<ITrack>();
+            Track = new Track();
 
             TransponderReceiver = TransponderReceiverFactory.CreateTransponderDataReceiver();
             TransponderReceiver.TransponderDataReady += DecodeTransData;
@@ -30,22 +34,37 @@ namespace AirTrafficMonitor.Implementation
         
         public void DecodeTransData(object sender, RawTransponderDataEventArgs e)
         {
+            OldTracks = new List<ITrack>(Tracks); 
             Tracks.Clear();
 
             foreach (var transData in e.TransponderData)
             {
                 string[] TrackData = transData.Split(';');
-                ITrack newTrack = new Track();
 
-                newTrack.Tag = TrackData[0];
-                newTrack.X = int.Parse(TrackData[1]);
-                newTrack.Y = int.Parse(TrackData[2]);
-                newTrack.Altitude = int.Parse(TrackData[3]);
-                newTrack.TimeStamp = Convert.ToDateTime(MakeDateTimeString(TrackData[4]));
+                Track.Tag = TrackData[0];
+                Track.X = int.Parse(TrackData[1]);
+                Track.Y = int.Parse(TrackData[2]);
+                Track.Altitude = int.Parse(TrackData[3]);
+                Track.TimeStamp = Convert.ToDateTime(MakeDateTimeString(TrackData[4]));
+                Track.Velocity = 0;
+                Track.Course = 0;
                 
-                if (IsInAirspace(newTrack))
+                if (IsInAirspace(Track))
                 {
-                    Tracks.Add(newTrack);
+                    if (OldTracks.Any(x => x.Tag == Track.Tag))
+                    {
+                        ITrack oldTrack = OldTracks.FirstOrDefault(x => x.Tag == Track.Tag);
+                        Track.CalculateCourse(oldTrack, Track);
+                        Track.CalculateVelocity(oldTrack, Track);
+                    }
+
+                    ITrack insertTrack = new Track()
+                    {
+                        Altitude = Track.Altitude, Course = Track.Course, Tag = Track.Tag,
+                        TimeStamp = Track.TimeStamp, Velocity = Track.Velocity, X = Track.X, Y = Track.Y
+                    };
+
+                    Tracks.Add(insertTrack);
                 }
             }
 
@@ -83,8 +102,9 @@ namespace AirTrafficMonitor.Implementation
         {
             foreach (var track in tracks)
             {
-                Writer.Write("Tag: " + track.Tag + " x-coordinate: " + track.X + " y-coordinate " + 
-                             track.Y + " altitude: " + track.Altitude + " timestamp: " + track.TimeStamp);
+                Writer.Write("Tag: " + track.Tag + " [x, y]: [" + track.X + ", " + 
+                             track.Y + "] altitude: " + track.Altitude + " velocity: " + track.Velocity +
+                             " course: " + track.Course);
             }
         }
 
