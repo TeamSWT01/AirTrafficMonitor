@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using AirTrafficMonitor.Interfaces;
+using AirTrafficMonitor.Implementation;
 
 namespace AirTrafficMonitor
 {
@@ -10,6 +11,12 @@ namespace AirTrafficMonitor
     {
         static void Main(string[] args)
         {
+            IDecoder program = new Decoder();
+
+            while (true)
+            {
+                
+            }
         }
     }
 }
