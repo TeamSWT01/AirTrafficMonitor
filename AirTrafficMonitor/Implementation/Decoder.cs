@@ -13,7 +13,7 @@ namespace AirTrafficMonitor.Implementation
     public class Decoder : IDecoder
     {
         public ITransponderReceiver TransponderReceiver { get; set; }
-        private Airspace airspace;
+        private readonly Airspace airspace;
         public IWriter Writer { get; set; }
         public ICollisionDetector CollisionDetector { get; set; }
         public List<ITrack> Tracks { get; set; }
