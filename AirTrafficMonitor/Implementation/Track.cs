@@ -34,8 +34,8 @@ namespace AirTrafficMonitor.Implementation
 
         public void CalculateVelocity(ITrack oldTrack, ITrack newTrack)
         {
-            int distance = (int)Math.Sqrt(Math.Pow(oldTrack.X - newTrack.X, 2) + 
-                                          Math.Pow(oldTrack.Y - newTrack.Y, 2));
+            int distance = (int) Math.Sqrt(Math.Pow(oldTrack.X - newTrack.X, 2) +
+                                           Math.Pow(oldTrack.Y - newTrack.Y, 2));
 
             double timeDiff = (newTrack.TimeStamp - oldTrack.TimeStamp).TotalSeconds;
 

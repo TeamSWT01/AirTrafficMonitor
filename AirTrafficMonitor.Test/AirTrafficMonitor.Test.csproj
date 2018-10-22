@@ -59,8 +59,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Decoder.Test.cs" />
+    <Compile Include="CollisionDetectorUnitTest.cs" />
+    <Compile Include="DecoderUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TrackUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

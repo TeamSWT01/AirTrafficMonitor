@@ -13,7 +13,7 @@ using TransponderReceiver;
 namespace AirTrafficMonitor.Test
 {
     [TestFixture]
-    public class Class1
+    public class DecoderUnitTest
     {
         // Declaring Unit Under Test and objects for all dependencies
         private Decoder _uut;
@@ -41,7 +41,6 @@ namespace AirTrafficMonitor.Test
             };
         }
 
-        // STUB: Testing Decoder - has a track been successfully stored in Tracks (List<ITrack>)?
         [TestCase("ABC123", "9999", "9999", "1000", "20180427120717123", false)]
         [TestCase("ABC123", "10000", "10000", "1000", "20180427120717123", true)]
         [TestCase("ABC123", "1000", "10000", "1000", "20180427120717123", false)]
