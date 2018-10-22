@@ -103,6 +103,17 @@ namespace AirTrafficMonitor.Test
             Assert.That(_uut.Altitude, Is.EqualTo(result));
         }
 
+        // ************************** Property: TimeStamp **************************
+        [Test]
+        public void DateTime_SetDateTimeToNow_ResultIsCorrect()
+        {
+            ITrack tesTrack1 = new Track() { TimeStamp = DateTime.Now};
+            
+            _uut.TimeStamp = tesTrack1.TimeStamp;
+
+            Assert.That(RoundUp(_uut.TimeStamp, TimeSpan.FromMinutes(1)), Is.EqualTo(RoundUp(DateTime.Now, TimeSpan.FromMinutes(1))));
+        }
+
         // Helper function to validate if a track is within the defined airspace
         private bool IsInAirspace(ITrack track)
         {
@@ -115,6 +126,11 @@ namespace AirTrafficMonitor.Test
             {
                 return false;
             }
+        }
+
+        DateTime RoundUp(DateTime dt, TimeSpan d)
+        {
+            return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
         }
     }
 }

@@ -96,5 +96,7 @@ namespace AirTrafficMonitor.Test
             _consoleWriter.DidNotReceive().Write(Arg.Any<string>());
         }
 
+
+
     }
 }
