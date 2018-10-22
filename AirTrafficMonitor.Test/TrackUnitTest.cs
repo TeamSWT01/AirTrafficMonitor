@@ -128,6 +128,7 @@ namespace AirTrafficMonitor.Test
             }
         }
 
+        // Helper function to round up DateTime to nearest minute
         DateTime RoundUp(DateTime dt, TimeSpan d)
         {
             return new DateTime((dt.Ticks + d.Ticks - 1) / d.Ticks * d.Ticks, dt.Kind);
