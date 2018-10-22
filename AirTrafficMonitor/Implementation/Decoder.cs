@@ -51,6 +51,7 @@ namespace AirTrafficMonitor.Implementation
                 
                 if (IsInAirspace(Track))
                 {
+                    // If same track is registered from next TransponderReceiver data, Course and Velocity are calculated
                     if (OldTracks.Any(x => x.Tag == Track.Tag))
                     {
                         ITrack oldTrack = OldTracks.FirstOrDefault(x => x.Tag == Track.Tag);
@@ -64,11 +65,14 @@ namespace AirTrafficMonitor.Implementation
                         TimeStamp = Track.TimeStamp, Velocity = Track.Velocity, X = Track.X, Y = Track.Y
                     };
 
+                    // Insert track in newest list of tracks
                     Tracks.Add(insertTrack);
                 }
             }
 
             PrintToConsole(Tracks);
+
+            // Check if any two tracks are colliding form list of tracks
             CollisionDetector.DetectCollision(Tracks);
         }
 
