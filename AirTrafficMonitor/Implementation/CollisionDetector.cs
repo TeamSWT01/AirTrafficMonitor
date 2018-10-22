@@ -18,18 +18,18 @@ namespace AirTrafficMonitor.Implementation
             LogWriter = new LogWriter();
         }
 
-        public void DetectCollision(List<ITrack> Tracks)
+        public void DetectCollision(List<ITrack> tracks)
         {
             int counter;
-            foreach (var track in Tracks)
+            foreach (var track in tracks)
             {
-                for (counter = Tracks.IndexOf(track) + 1; counter < Tracks.Count; counter++)
+                for (counter = tracks.IndexOf(track) + 1; counter < tracks.Count; counter++)
                 {
-                    if (CalculateDistance(track.X, track.Y, Tracks[counter].X, Tracks[counter].Y) < 5000 &&
-                        (track.Altitude - Tracks[counter].Altitude) < 300)
+                    if (CalculateDistance(track.X, track.Y, tracks[counter].X, tracks[counter].Y) < 5000 &&
+                        (track.Altitude - tracks[counter].Altitude) < 300)
                     {
-                        ConsoleWriter.Write(CreateConsoleText(track.Tag, Tracks[counter].Tag, DateTime.Now));
-                        LogWriter.Write(CreateConsoleText(track.Tag, Tracks[counter].Tag, DateTime.Now));
+                        ConsoleWriter.Write(CreateConsoleText(track.Tag, tracks[counter].Tag, DateTime.Now));
+                        LogWriter.Write(CreateConsoleText(track.Tag, tracks[counter].Tag, DateTime.Now));
 
                     }
                 }

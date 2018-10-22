@@ -12,6 +12,6 @@ namespace AirTrafficMonitor.Interfaces
         IWriter ConsoleWriter { get; set; }
         IWriter LogWriter { get; set; }
 
-        void DetectCollision(List<ITrack> Tracks);
+        void DetectCollision(List<ITrack> tracks);
     }
 }
