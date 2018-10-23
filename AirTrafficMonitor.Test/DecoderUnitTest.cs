@@ -90,20 +90,6 @@ namespace AirTrafficMonitor.Test
             _track.DidNotReceive().CalculateVelocity(Arg.Any<ITrack>(), Arg.Any<ITrack>());
         }
 
-        // STUB: Testing ITrack Course return value
-        //[TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
-        //public void Course_CoursePropertySetFromDecodeTransDataMethod_CourseIsSet(string tag, string x, string y,
-        //    string altitude, string dateTime)
-        //{
-        //    List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
-        //    _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
-
-        //    List<string> list2 = new List<string>() { tag + ';' + "12000" + ';' + "12000" + ';' + altitude + ';' + dateTime };
-        //    _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list2));
-
-        //    Assert.That(_uut.Track.Course, Is.EqualTo(225));
-        //}
-
         // MOCK: Testing ITrack - is Track.CalculateCourse() called with valid input?
         [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
         public void DecodeTransData_IsInAirspace_CalculateCourseIsCalled(string tag, string x, string y,
