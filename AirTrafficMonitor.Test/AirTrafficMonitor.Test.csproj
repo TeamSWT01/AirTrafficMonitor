@@ -61,7 +61,9 @@
   <ItemGroup>
     <Compile Include="Integration\Collision_Logwriter.cs" />
     <Compile Include="Integration\Decoder_Airspace.cs" />
+    <Compile Include="Integration\Decoder_Collision.cs" />
     <Compile Include="Integration\Decoder_LogWriter.cs" />
+    <Compile Include="Integration\Decoder_Track.cs" />
     <Compile Include="Unit\CollisionDetectorUnitTest.cs" />
     <Compile Include="Unit\DecoderUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
