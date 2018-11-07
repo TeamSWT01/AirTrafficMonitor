@@ -59,10 +59,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CollisionDetectorUnitTest.cs" />
-    <Compile Include="DecoderUnitTest.cs" />
+    <Compile Include="Integration\Collision_Logwriter.cs" />
+    <Compile Include="Unit\CollisionDetectorUnitTest.cs" />
+    <Compile Include="Unit\DecoderUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TrackUnitTest.cs" />
+    <Compile Include="Unit\TrackUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -73,6 +74,7 @@
       <Name>AirTrafficMonitor</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

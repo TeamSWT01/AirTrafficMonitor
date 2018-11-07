@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using AirTrafficMonitor.Dto;
 using AirTrafficMonitor.Interfaces;
 using TransponderReceiver;
@@ -13,17 +10,20 @@ namespace AirTrafficMonitor.Implementation
     public class Decoder : IDecoder
     {
         public ITransponderReceiver TransponderReceiver { get; set; }
-        private readonly Airspace airspace;
+        private readonly Airspace _airspace;
         public IWriter Writer { get; set; }
         public ICollisionDetector CollisionDetector { get; set; }
         public List<ITrack> Tracks { get; set; }
         public List<ITrack> OldTracks { get; set; }
         public ITrack Track { get; set; }
+        public Action<List<ITrack>> OnTracksReady { get;  set; }
+        public Action<ITrack> TrackEntered { get; set; }
+        public Action<ITrack> TrackLeaving { get; set; }
 
         public Decoder()
         {
-            airspace = new Airspace(90000, 10000, 90000, 10000, 20000, 500);
-            Writer = new ConsoleWriter();
+            _airspace = new Airspace(90000, 10000, 90000, 10000, 20000, 500);
+            Writer = new LogWriter();
             CollisionDetector = new CollisionDetector();
             Tracks = new List<ITrack>();
             Track = new Track();
@@ -39,15 +39,16 @@ namespace AirTrafficMonitor.Implementation
 
             foreach (var transData in e.TransponderData)
             {
-                string[] TrackData = transData.Split(';');
+                string[] trackData = transData.Split(';');
 
-                Track.Tag = TrackData[0];
-                Track.X = int.Parse(TrackData[1]);
-                Track.Y = int.Parse(TrackData[2]);
-                Track.Altitude = int.Parse(TrackData[3]);
-                Track.TimeStamp = Convert.ToDateTime(MakeDateTimeString(TrackData[4]));
+                Track.Tag = trackData[0];
+                Track.X = int.Parse(trackData[1]);
+                Track.Y = int.Parse(trackData[2]);
+                Track.Altitude = int.Parse(trackData[3]);
+                Track.TimeStamp = Convert.ToDateTime(MakeDateTimeString(trackData[4]));
                 Track.Velocity = 0;
                 Track.Course = 0;
+
                 
                 if (IsInAirspace(Track))
                 {
@@ -69,8 +70,25 @@ namespace AirTrafficMonitor.Implementation
                     Tracks.Add(insertTrack);
                 }
             }
+            foreach (var track in Tracks)
+            {
+                if (!OldTracks.Any(x => x.Tag == track.Tag))
+                {
+                    TrackEntered?.Invoke(track);
+                    Writer.Write("Track entered airspace! Time: " + DateTime.Now + " Tag: " + track.Tag);
+                }
+            }
 
-            PrintToConsole(Tracks);
+            foreach (var track in OldTracks)
+            {
+                if (!Tracks.Any(x => x.Tag == track.Tag))
+                {
+                    TrackLeaving?.Invoke(track);
+                    Writer.Write("Track leaving airspace! Time: " + DateTime.Now + " Tag: " + track.Tag);
+                }
+            }
+            //PrintToConsole(Tracks);
+            OnTracksReady?.Invoke(Tracks);
 
             // Check if any two tracks are colliding form list of tracks
             CollisionDetector.DetectCollision(Tracks);
@@ -90,9 +108,9 @@ namespace AirTrafficMonitor.Implementation
 
         private bool IsInAirspace(ITrack track)
         {
-            if (track.X >= airspace.XLower && track.X <= airspace.XUpper &&
-                track.Y >= airspace.YLower && track.Y <= airspace.YUpper &&
-                track.Altitude >= airspace.AltitudeLower && track.Altitude <= airspace.AltitudeUpper)
+            if (track.X >= _airspace.XLower && track.X <= _airspace.XUpper &&
+                track.Y >= _airspace.YLower && track.Y <= _airspace.YUpper &&
+                track.Altitude >= _airspace.AltitudeLower && track.Altitude <= _airspace.AltitudeUpper)
             {
                 return true;
             }

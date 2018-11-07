@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TransponderReceiver;
 
 namespace AirTrafficMonitor.Interfaces
@@ -15,6 +12,9 @@ namespace AirTrafficMonitor.Interfaces
         List<ITrack> Tracks { get; set; }
         List<ITrack> OldTracks { get; set; }
         ITrack Track { get; set; }
+        Action<List<ITrack>> OnTracksReady { get;  set; }
+        Action<ITrack> TrackEntered { get; set; }
+        Action<ITrack> TrackLeaving { get; set; }
 
         void DecodeTransData(object sender, RawTransponderDataEventArgs e);
     }

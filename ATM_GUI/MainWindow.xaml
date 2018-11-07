@@ -1,0 +1,33 @@
+﻿<Window x:Class="ATM_GUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ATM_GUI"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="905">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <Label Content="Airplanes in airspace" Padding="25 5 5 5" FontSize="25" Background="CadetBlue" Foreground="AliceBlue"/>
+                <DataGrid Name="DataGrid">
+
+                </DataGrid>
+            </StackPanel>
+            
+            <StackPanel>
+                <Label Content="Track(s) just entered airspace" Padding="25 5 5 5" FontSize="25" Background="Green" Foreground="AliceBlue"></Label>
+                <DataGrid Name="DataGridEntered">
+
+                </DataGrid>
+            </StackPanel>
+            <StackPanel>
+                <Label Content="Track(s) leaving airspace" Padding="25 5 5 5" FontSize="25" Background="Red" Foreground="AliceBlue"></Label>
+                <DataGrid Name="DataGridLeaving">
+
+                </DataGrid>
+            </StackPanel>
+            
+        </StackPanel>
+    </Grid>
+</Window>

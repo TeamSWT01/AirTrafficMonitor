@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AirTrafficMonitor.Interfaces;
 
 namespace AirTrafficMonitor.Implementation
@@ -44,7 +41,7 @@ namespace AirTrafficMonitor.Implementation
 
         private string CreateConsoleText(string tag1, string tag2, DateTime time)
         {
-            return time.ToLongTimeString() + ": Collision between " + tag1 + " and " + tag2;
+            return time.ToShortTimeString() + ": Collision between " + tag1 + " and " + tag2;
         }
     }
 }

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AirTrafficMonitor.Implementation;
 using AirTrafficMonitor.Interfaces;
 using Castle.Core.Internal;
 using NSubstitute;
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 using TransponderReceiver;
 
 namespace AirTrafficMonitor.Test
@@ -118,7 +115,7 @@ namespace AirTrafficMonitor.Test
             _track.DidNotReceive().CalculateCourse(Arg.Any<ITrack>(), Arg.Any<ITrack>());
         }
 
-        // MOCK: Testing IWriter - is ConsoleWriter.Write() called?
+        // MOCK: Testing IWriter - is Write() called?
         [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
         public void DecodeTransData_IsInAirspace_WriteIsCalled(string tag, string x, string y,
             string altitude, string dateTime)
