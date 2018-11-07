@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AirTrafficMonitor.Implementation;
-using AirTrafficMonitor.Interfaces;
-using NSubstitute;
 using NUnit.Framework;
 using TransponderReceiver;
 using Decoder = AirTrafficMonitor.Implementation.Decoder;
@@ -34,7 +29,5 @@ namespace AirTrafficMonitor.Test.Integration
             var lastLine = File.ReadLines(@"Track.txt").Last();
             Assert.That(lastLine, Is.EqualTo("Track entered airspace! Time: " + DateTime.Now.ToShortTimeString() + " Tag: " + tag));
         }
-
-        
     }
 }
