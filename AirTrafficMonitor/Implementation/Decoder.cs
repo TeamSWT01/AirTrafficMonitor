@@ -75,7 +75,7 @@ namespace AirTrafficMonitor.Implementation
                 if (!OldTracks.Any(x => x.Tag == track.Tag))
                 {
                     TrackEntered?.Invoke(track);
-                    Writer.Write("Track entered airspace! Time: " + DateTime.Now + " Tag: " + track.Tag);
+                    Writer.Write("Track entered airspace! Time: " + DateTime.Now.ToShortTimeString() + " Tag: " + track.Tag);
                 }
             }
 
@@ -84,7 +84,7 @@ namespace AirTrafficMonitor.Implementation
                 if (!Tracks.Any(x => x.Tag == track.Tag))
                 {
                     TrackLeaving?.Invoke(track);
-                    Writer.Write("Track leaving airspace! Time: " + DateTime.Now + " Tag: " + track.Tag);
+                    Writer.Write("Track leaving airspace! Time: " + DateTime.Now.ToShortTimeString() + " Tag: " + track.Tag);
                 }
             }
             //PrintToConsole(Tracks);
