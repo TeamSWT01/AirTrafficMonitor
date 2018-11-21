@@ -94,7 +94,7 @@ namespace AirTrafficMonitor.Test
         //    _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list2));
 
         //    _track.Received().CalculateCourse(Arg.Any<ITrack>(), Arg.Any<ITrack>());
-        //}
+        }
 
 
         // MOCK: Testing ITrack - is Track.CalculateCourse() called with invalid input?

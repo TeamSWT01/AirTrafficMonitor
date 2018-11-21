@@ -60,9 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Unit\CollisionDetectorUnitTest.cs" />
+    <Compile Include="Unit\CollisionDetectorUnitTestCases.cs" />
     <Compile Include="Unit\DecoderUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\DecoderUnitTestCases.cs" />
     <Compile Include="Unit\TrackUnitTest.cs" />
+    <Compile Include="Unit\TrackUnitTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
