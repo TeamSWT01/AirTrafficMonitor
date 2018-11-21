@@ -90,10 +90,10 @@ namespace AirTrafficMonitor.Test
             List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
 
-        //    List<string> list2 = new List<string>() { tag + ';' + "12000" + ';' + y + ';' + altitude + ';' + dateTime };
-        //    _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list2));
+            List<string> list2 = new List<string>() { tag + ';' + "12000" + ';' + y + ';' + altitude + ';' + dateTime };
+            _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list2));
 
-        //    _track.Received().CalculateCourse(Arg.Any<ITrack>(), Arg.Any<ITrack>());
+            _track.Received().CalculateCourse(Arg.Any<ITrack>(), Arg.Any<ITrack>());
         }
 
 
