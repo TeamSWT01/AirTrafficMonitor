@@ -88,6 +88,8 @@ namespace AirTrafficMonitor.Implementation
                 }
             }
             //PrintToConsole(Tracks);
+
+            // Print to GUI
             OnTracksReady?.Invoke(Tracks);
 
             // Check if any two tracks are colliding form list of tracks
