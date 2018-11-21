@@ -19,6 +19,9 @@ namespace AirTrafficMonitor.Test
         private ITrack _track;
         private IWriter _writer;
         private ITransponderReceiver _transponderReceiver;
+        private bool OnTracksReady;
+        private bool TrackEntered;
+        private bool TrackLeaving;
 
         [SetUp]
         public void Setup()
@@ -29,6 +32,10 @@ namespace AirTrafficMonitor.Test
             _writer = Substitute.For<IWriter>();
             _transponderReceiver = Substitute.For<ITransponderReceiver>();
 
+            OnTracksReady = false;
+            TrackEntered = false;
+            TrackLeaving = false;
+
             // Injecting fakes into class Decoder (UUT)
             _uut = new Decoder
             {
@@ -37,6 +44,10 @@ namespace AirTrafficMonitor.Test
                 Track = _track,
                 TransponderReceiver = _transponderReceiver
             };
+
+            _uut.OnTracksReady += (List<ITrack> tracks) => { OnTracksReady = true; };
+            _uut.TrackEntered += (ITrack track) => { TrackEntered = true; };
+            _uut.TrackLeaving += (ITrack track) => { TrackLeaving = true; };
         }
 
         [TestCaseSource(typeof(DecodeTransData_TrackIsInAirspace_ResultAsExpected_Cases))]
@@ -130,6 +141,36 @@ namespace AirTrafficMonitor.Test
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
 
             _collisionDetector.Received().DetectCollision(Arg.Any<List<ITrack>>());
+        }
+
+        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
+        public void DecodeTransData_OnTracksReady_EventIsCalled(string tag, string x, string y, string altitude, string dateTime)
+        {
+            List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
+            _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
+
+            Assert.That(OnTracksReady, Is.EqualTo(true));
+        }
+
+        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
+        public void DecodeTransData_TrackEntered_EventIsCalled(string tag, string x, string y, string altitude, string dateTime)
+        {
+            List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
+            _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
+
+            Assert.That(TrackEntered, Is.EqualTo(true));
+        }
+
+        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
+        public void DecodeTransData_TrackLeaving_EventIsCalled(string tag, string x, string y, string altitude, string dateTime)
+        {
+            List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
+            _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
+
+            List<string> list2 = new List<string>() { tag + ';' + "90001" + ';' + y + ';' + altitude + ';' + dateTime };
+            _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list2));
+
+            Assert.That(TrackLeaving, Is.EqualTo(true));
         }
 
 
