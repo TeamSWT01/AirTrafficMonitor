@@ -1,5 +1,6 @@
 ﻿using System;
 using AirTrafficMonitor.Implementation;
+using AirTrafficMonitor.Test.Unit;
 using AirTrafficMonitor.Interfaces;
 using NUnit.Framework;
 
@@ -16,14 +17,10 @@ namespace AirTrafficMonitor.Test
             _uut = new Track();
         }
 
+
         // ************************** Property: Course **************************
-        [TestCase(20000, 20000, 10000, 10000, 45)]
-        [TestCase(20000, 20000, 9999, 10000, null)]
-        [TestCase(20000, 20000, 10000, 9999, null)]
-        [TestCase(90000, 11000, 10000, 10000, 89)]
-        [TestCase(90001, 20000, 10000, 10000, null)]
-        [TestCase(20000, 90001, 10000, 10000, null)]
-        public void CalculateCourse_ValidAndInvalidCoordinates_ResultIsCorrect(int x1, int y1, int x2, int y2, int result)
+        [TestCaseSource(typeof(Course_Calculate_Valid_Invalid_Coordinates_ResultCorrect_Cases))]
+        public void CourseCalculate_ValidAndInvalid_Coordinates_ResultIsCorrect(int x1, int y1, int x2, int y2, int result)
         {
             ITrack tesTrack1 = new Track() { X = x1, Y = y1, Altitude = 500};
             ITrack tesTrack2 = new Track() { X = x2, Y = y2, Altitude = 500};
@@ -35,6 +32,7 @@ namespace AirTrafficMonitor.Test
 
             Assert.That(_uut.Course, Is.EqualTo(result));
         }
+
 
         // ************************** Property: Velocity **************************
         [Test]
@@ -48,12 +46,10 @@ namespace AirTrafficMonitor.Test
             Assert.That(Math.Round(_uut.Velocity, 1), Is.EqualTo(0.5));
         }
 
+
         // ************************** Property: X **************************
-        [TestCase(10000, 10000)]
-        [TestCase(9999, null)]
-        [TestCase(90000, 90000)]
-        [TestCase(90001, null)]
-        public void X_ValidAndInvalidCoordinates_ResultIsCorrect(int x1, int result)
+        [TestCaseSource(typeof(X_Coordinate_Valid_Invalid_ResultCorrect_Cases))]
+        public void X_Coordinate_ValidAndInvalid_ResultIsCorrect(int x1, int result)
         {
             ITrack tesTrack1 = new Track() { X = x1, Y = 10000, Altitude = 500};
 
@@ -65,12 +61,10 @@ namespace AirTrafficMonitor.Test
             Assert.That(_uut.X, Is.EqualTo(result));
         }
 
+
         // ************************** Property: Y **************************
-        [TestCase(10000, 10000)]
-        [TestCase(9999, null)]
-        [TestCase(90000, 90000)]
-        [TestCase(90001, null)]
-        public void Y_ValidAndInvalidCoordinates_ResultIsCorrect(int y1, int result)
+        [TestCaseSource(typeof(Y_Coordinate_Valid_Invalid_ResultCorrect_Cases))]
+        public void Y_Coordinate_ValidAndInvalid_ResultIsCorrect(int y1, int result)
         {
             ITrack tesTrack1 = new Track() { X = 10000, Y = y1, Altitude = 500};
 
@@ -82,11 +76,9 @@ namespace AirTrafficMonitor.Test
             Assert.That(_uut.Y, Is.EqualTo(result));
         }
 
+
         // ************************** Property: Altitude **************************
-        [TestCase(500, 500)]
-        [TestCase(499, null)]
-        [TestCase(20000, 20000)]
-        [TestCase(20001, null)]
+        [TestCaseSource(typeof(Altitude_Coordinate_Valid_Invalid_ResultCorrect_Cases))]
         public void Altitude_ValidAndInvalidCoordinates_ResultIsCorrect(int altitude, int result)
         {
             ITrack tesTrack1 = new Track() { X = 10000, Y = 10000, Altitude = altitude};
@@ -99,6 +91,7 @@ namespace AirTrafficMonitor.Test
             Assert.That(_uut.Altitude, Is.EqualTo(result));
         }
 
+
         // ************************** Property: TimeStamp **************************
         [Test]
         public void DateTime_SetDateTimeToNow_ResultIsCorrect()
@@ -109,6 +102,7 @@ namespace AirTrafficMonitor.Test
 
             Assert.That(RoundUp(_uut.TimeStamp, TimeSpan.FromMinutes(1)), Is.EqualTo(RoundUp(DateTime.Now, TimeSpan.FromMinutes(1))));
         }
+
 
         // Helper function to validate if a track is within the defined airspace
         private bool IsInAirspace(ITrack track)
