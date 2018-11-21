@@ -32,7 +32,6 @@ namespace AirTrafficMonitor.Test.Unit
         public IEnumerator GetEnumerator()
         {
             yield return new[] { 1000, 14999, 15001, 701, 14000, 14000 };
-            yield return new[] { 20000, 90000, 90000, 19701, 85001, 85001 };
         }
     }
 
