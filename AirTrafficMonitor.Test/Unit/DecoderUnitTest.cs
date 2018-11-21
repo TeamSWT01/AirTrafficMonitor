@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using AirTrafficMonitor.Implementation;
 using AirTrafficMonitor.Interfaces;
+using AirTrafficMonitor.Test.Unit;
 using Castle.Core.Internal;
 using NSubstitute;
 using NUnit.Framework;
@@ -38,14 +39,8 @@ namespace AirTrafficMonitor.Test
             };
         }
 
-        [TestCase("ABC123", "9999", "9999", "1000", "20180427120717123", false)]
-        [TestCase("ABC123", "10000", "10000", "1000", "20180427120717123", true)]
-        [TestCase("ABC123", "1000", "10000", "1000", "20180427120717123", false)]
-        [TestCase("ABC123", "90000", "90000", "1000", "20180427120717123", true)]
-        [TestCase("ABC123", "90001", "90001", "1000", "20180427120717123", false)]
-        [TestCase("ABC123", "90000", "90001", "1000", "20180427120717123", false)]
-        public void DecodeTransData_TrackIsInAirspace_ResultAsExpected(string tag, string x, string y, string altitude,
-            string dateTime, bool result)
+        [TestCaseSource(typeof(DecodeTransData_TrackIsInAirspace_ResultAsExpected_Cases))]
+        public void DecodeTransData_TrackIsInAirspace_ResultAsExpected(string tag, string x, string y, string altitude, string dateTime, bool result)
         {
             List<string> list=new List<string>(){tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime};
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
@@ -59,10 +54,10 @@ namespace AirTrafficMonitor.Test
             Assert.That(_uut.Tracks.IsNullOrEmpty(), Is.EqualTo(!result));
         }
 
+
         // MOCK: Testing ITrack - is Track.CalculateVelocity() called with valid input?
-        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
-        public void DecodeTransData_IsInAirspace_CalculateVelocityIsCalled(string tag, string x, string y, 
-            string altitude, string dateTime)
+       [TestCaseSource(typeof(MockTesting_ITrack_CalculateVelocityIsCalled_ValidInput_Cases) )]
+        public void DecodeTransData_IsInAirspace_CalculateVelocityIsCalled(string tag, string x, string y, string altitude, string dateTime)
         {
             List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
@@ -74,9 +69,8 @@ namespace AirTrafficMonitor.Test
         }
 
         // MOCK: Testing ITrack - is Track.CalculateVelocity() called with invalid input?
-        [TestCase("ABC123", "90001", "90001", "1000", "20000101101010999")]
-        public void DecodeTransData_IsNOTInAirspace_CalculateVelocityIsCalled(string tag, string x, string y,
-            string altitude, string dateTime)
+        [TestCaseSource(typeof(MockTesting_ITrack_CalculateVelocityIsCalled_InvalidInput_Cases))]
+        public void DecodeTransData_IsNOTInAirspace_CalculateVelocityIsCalled(string tag, string x, string y, string altitude, string dateTime)
         {
             List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
@@ -87,13 +81,14 @@ namespace AirTrafficMonitor.Test
             _track.DidNotReceive().CalculateVelocity(Arg.Any<ITrack>(), Arg.Any<ITrack>());
         }
 
+
         // MOCK: Testing ITrack - is Track.CalculateCourse() called with valid input?
-        //[TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
-        //public void DecodeTransData_IsInAirspace_CalculateCourseIsCalled(string tag, string x, string y,
-        //    string altitude, string dateTime)
-        //{
-        //    List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
-        //    _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
+        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
+        public void DecodeTransData_IsInAirspace_CalculateCourseIsCalled(string tag, string x, string y,
+            string altitude, string dateTime)
+        {
+            List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
+            _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
 
         //    List<string> list2 = new List<string>() { tag + ';' + "12000" + ';' + y + ';' + altitude + ';' + dateTime };
         //    _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list2));
@@ -101,10 +96,10 @@ namespace AirTrafficMonitor.Test
         //    _track.Received().CalculateCourse(Arg.Any<ITrack>(), Arg.Any<ITrack>());
         //}
 
+
         // MOCK: Testing ITrack - is Track.CalculateCourse() called with invalid input?
-        [TestCase("ABC123", "9999", "9999", "1000", "20000101101010999")]
-        public void DecodeTransData_IsNOTInAirspace_CalculateCourseIsNOTCalled(string tag, string x, string y,
-            string altitude, string dateTime)
+        [TestCaseSource(typeof(MockTesting_ITrack_CalculateCourseIsCalled_InValidInput_Cases))]
+        public void DecodeTransData_IsNOTInAirspace_CalculateCourseIsNOTCalled(string tag, string x, string y, string altitude, string dateTime)
         {
             List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
@@ -115,10 +110,10 @@ namespace AirTrafficMonitor.Test
             _track.DidNotReceive().CalculateCourse(Arg.Any<ITrack>(), Arg.Any<ITrack>());
         }
 
+
         // MOCK: Testing IWriter - is Write() called?
-        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
-        public void DecodeTransData_IsInAirspace_WriteIsCalled(string tag, string x, string y,
-            string altitude, string dateTime)
+        [TestCaseSource(typeof(MockTesting_IWriter_Cases))]
+        public void DecodeTransData_IsInAirspace_WriteIsCalled(string tag, string x, string y, string altitude, string dateTime)
         {
             List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
@@ -126,16 +121,17 @@ namespace AirTrafficMonitor.Test
             _writer.Received().Write(Arg.Any<string>());
         }
 
+
         // MOCK: Testing ICollisionDetector - is CollisionDetector.DetectCollision() called?
-        [TestCase("ABC123", "10000", "10000", "1000", "20000101101010999")]
-        public void DecodeTransData_IsInAirspace_DetectCollisionIsCalled(string tag, string x, string y,
-            string altitude, string dateTime)
+        [TestCaseSource(typeof(MockTesting_ICollisionDetector_DetectCollisionIsCalled_Cases))]
+        public void DecodeTransData_IsInAirspace_DetectCollisionIsCalled(string tag, string x, string y, string altitude, string dateTime)
         {
             List<string> list = new List<string>() { tag + ';' + x + ';' + y + ';' + altitude + ';' + dateTime };
             _uut.DecodeTransData(new object(), new RawTransponderDataEventArgs(list));
 
             _collisionDetector.Received().DetectCollision(Arg.Any<List<ITrack>>());
         }
+
 
         // Helper function to determine dateTime
         private string MakeDateTimeString(string dateTime)

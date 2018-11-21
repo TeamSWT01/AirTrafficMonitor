@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AirTrafficMonitor.Implementation;
 using AirTrafficMonitor.Interfaces;
+using AirTrafficMonitor.Test.Unit;
 using NSubstitute;
 using NUnit.Framework;
 
@@ -30,8 +31,7 @@ namespace AirTrafficMonitor.Test
         }
 
         // MOCK: LogWriter is called
-        [TestCase(1000, 14999, 15001, 701, 14000, 14000)]
-        [TestCase(20000, 90000, 90000, 19701, 85001, 85001)]
+        [TestCaseSource(typeof(MockLogWriter_Called_Cases))]
         public void DetectCollision_PossibleCollisionDetected_LogWriterIsCalled(int altitude1, int x1, int y1, int altitude2, int x2, int y2)
         {
             ITrack testTrack1 = new Track() { Altitude = altitude1, X = x1, Y = y2 };
@@ -45,9 +45,7 @@ namespace AirTrafficMonitor.Test
         }
 
         // MOCK: LogWriter is NOT called
-        [TestCase(1000, 15000, 15000, 701, 10000, 10000)] // Altitude less than 300 meters, but airplane coordinates more than 4999 meters from each other
-        [TestCase(1000, 14999, 15000, 700, 10000, 10000)] // X coordinate less than 5000 meters from each other, but altitude more than 299 meters
-        [TestCase(1000, 15000, 14999, 700, 10000, 10000)] // Y coordinate less than 5000 meters from each other, but altitude more than 299 meters
+        [TestCaseSource(typeof(MockLogWriter_NotCalled_Cases))]
         public void DetectCollision_PossibleCollisionDetected_LogWriterIsNOTCalled(int altitude1, int x1, int y1, int altitude2, int x2, int y2)
         {
             ITrack testTrack1 = new Track() { Altitude = altitude1, X = x1, Y = y2 };
@@ -61,8 +59,7 @@ namespace AirTrafficMonitor.Test
         }
 
         // MOCK: ConsoleWriter is called
-        [TestCase(1000, 14999, 15001, 701, 14000, 14000)]
-        //[TestCase(20000, 90000, 90000, 19701, 85001, 85001)]
+        [TestCaseSource(typeof(MockConsoleWriter_Called_Cases))]
         public void DetectCollision_PossibleCollisionDetected_ConsoleWriterIsCalled(int altitude1, int x1, int y1, int altitude2, int x2, int y2)
         {
             ITrack testTrack1 = new Track() { Altitude = altitude1, X = x1, Y = y1 };
@@ -76,9 +73,7 @@ namespace AirTrafficMonitor.Test
         }
 
         // MOCK: ConsoleWriter is NOT called
-        [TestCase(1000, 15000, 15000, 701, 10000, 10000)] // Altitude less than 300 meters, but airplane coordinates more than 4999 meters from each other
-        [TestCase(1000, 14999, 15000, 700, 10000, 10000)] // X coordinate less than 5000 meters from each other, but altitude more than 299 meters
-        [TestCase(1000, 15000, 14999, 700, 10000, 10000)] // Y coordinate less than 5000 meters from each other, but altitude more than 299 meters
+        [TestCaseSource(typeof(MockConsoleWriter_NotCalled_Cases))]
         public void DetectCollision_PossibleCollisionDetected_ConsoleWriterIsNOTCalled(int altitude1, int x1, int y1, int altitude2, int x2, int y2)
         {
             ITrack testTrack1 = new Track() { Altitude = altitude1, X = x1, Y = y1 };
@@ -90,8 +85,5 @@ namespace AirTrafficMonitor.Test
 
             _consoleWriter.DidNotReceive().Write(Arg.Any<string>());
         }
-
-
-
     }
 }
