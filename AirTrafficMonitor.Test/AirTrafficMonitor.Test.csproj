@@ -59,12 +59,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\CollisionLogWriter.cs" />
-    <Compile Include="Integration\CollisionLogwriterCases.cs" />
-    <Compile Include="Integration\Decoder_Airspace.cs" />
-    <Compile Include="Integration\Decoder_Collision.cs" />
-    <Compile Include="Integration\Decoder_LogWriter.cs" />
-    <Compile Include="Integration\Decoder_Track.cs" />
     <Compile Include="Unit\CollisionDetectorUnitTest.cs" />
     <Compile Include="Unit\CollisionDetectorUnitTestCases.cs" />
     <Compile Include="Unit\DecoderUnitTest.cs" />
