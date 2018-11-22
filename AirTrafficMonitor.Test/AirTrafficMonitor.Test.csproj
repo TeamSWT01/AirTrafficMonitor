@@ -59,15 +59,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Integration\Collision_Logwriter.cs" />
+    <Compile Include="Integration\CollisionLogWriter.cs" />
+    <Compile Include="Integration\CollisionLogwriterCases.cs" />
     <Compile Include="Integration\Decoder_Airspace.cs" />
     <Compile Include="Integration\Decoder_Collision.cs" />
     <Compile Include="Integration\Decoder_LogWriter.cs" />
     <Compile Include="Integration\Decoder_Track.cs" />
     <Compile Include="Unit\CollisionDetectorUnitTest.cs" />
+    <Compile Include="Unit\CollisionDetectorUnitTestCases.cs" />
     <Compile Include="Unit\DecoderUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Unit\DecoderUnitTestCases.cs" />
     <Compile Include="Unit\TrackUnitTest.cs" />
+    <Compile Include="Unit\TrackUnitTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

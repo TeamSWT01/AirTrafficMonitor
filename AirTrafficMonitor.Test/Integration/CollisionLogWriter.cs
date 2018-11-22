@@ -23,8 +23,7 @@ namespace AirTrafficMonitor.Test.Integration
             collisionDetector = new CollisionDetector();
         }
 
-        [TestCase(1000, 14999, 15001, 701, 14000, 14000)]
-        [TestCase(20000, 90000, 90000, 19701, 85001, 85001)]
+        [TestCaseSource(typeof(SeperationEvent_WriteToLog))]
         public void DetectCollision_SeparationEvent_WriteToLog(int altitude1, int x1, int y1, int altitude2, int x2, int y2)
         {
             ITrack testTrack1 = new Track() { Tag = "XY123456", Altitude = altitude1, X = x1, Y = y2, TimeStamp = DateTime.Now};
